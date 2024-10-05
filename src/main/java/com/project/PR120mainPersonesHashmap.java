@@ -37,11 +37,29 @@ public class PR120mainPersonesHashmap {
 
     // Mètode per escriure les persones al fitxer
     public static void escriurePersones(HashMap<String, Integer> persones) throws IOFitxerExcepcio {
-       // *************** CODI PRÀCTICA **********************/
+        try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File(filePath)));){
+            for(String key : persones.keySet()){
+                dos.writeUTF(key);
+                dos.writeInt(persones.get(key));
+            }
+            dos.flush();
+        }catch(IOException e){
+            throw new IOFitxerExcepcio("Error en escriure les persones al fitxer: ",e);
+        }
+        
     }
 
     // Mètode per llegir les persones des del fitxer
     public static void llegirPersones() throws IOFitxerExcepcio {
-        // *************** CODI PRÀCTICA **********************/
+        try(DataInputStream dis = new DataInputStream(new FileInputStream(new File(filePath)))){
+            while(dis.available()>0){
+                String nom = dis.readUTF();
+                int edat = dis.readInt();
+                System.out.println(nom+": "+edat+" anys");
+            }
+            
+        }catch(IOException e){
+            throw new IOFitxerExcepcio("Error en llegir les persones del fitxer",e);
+        }
     }
 }

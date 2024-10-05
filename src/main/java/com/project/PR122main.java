@@ -26,13 +26,20 @@ public class PR122main {
 
     // Mètode per serialitzar la llista de persones
     public static void serialitzarPersones(List<PR122persona> persones) throws IOFitxerExcepcio {
-        // *************** CODI PRÀCTICA **********************/
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))){
+            oos.writeObject(persones);
+        }catch(IOException e){
+            throw new IOFitxerExcepcio("Error serialitzant la classe",e);
+        }
     }
 
     // Mètode per deserialitzar la llista de persones
     public static List<PR122persona> deserialitzarPersones() throws IOFitxerExcepcio {
-        // *************** CODI PRÀCTICA **********************/
-        return new ArrayList(); // Substitueix pel teu
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))){
+            return (List<PR122persona>)ois.readObject();
+        }catch(IOException | ClassNotFoundException e){
+            throw new IOFitxerExcepcio("Fitxer no trobat");
+        }
     }
 
 
